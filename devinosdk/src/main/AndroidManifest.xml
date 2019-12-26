@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.devinotele.devinosdk">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
+
+        <receiver android:name=".sdk.DevinoPushReceiver"/>
+        <receiver android:name=".sdk.DevinoCancelReceiver"/>
+        <receiver android:name=".sdk.DevinoLocationReceiver">
+            <intent-filter>
+                <action android:name="com.devinotele.devinosdk.ALARM" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".sdk.DevinoSdkPushService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".sdk.DevinoLocationIntentService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+    </application>
+
+</manifest>
