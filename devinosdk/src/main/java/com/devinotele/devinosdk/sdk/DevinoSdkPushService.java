@@ -26,8 +26,8 @@ import java.util.Map;
 
 public class DevinoSdkPushService extends FirebaseMessagingService {
 
-    private String channelId = "devino_push";
     Gson gson = new Gson();
+    private String channelId = "devino_push";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -36,22 +36,27 @@ public class DevinoSdkPushService extends FirebaseMessagingService {
 
             Map<String, String> data = remoteMessage.getData();
 
-            String icon   = data.get("icon");
-            String title  = data.get("title");
-            String body   = data.get("body");
             String pushId = data.get("pushId");
 
-            if (pushId == null) pushId = "1";
+            if (pushId == null) return;
+
+            String icon = data.get("icon");
+            String title = data.get("title");
+            String body = data.get("body");
 
             String buttonsJson = data.get("buttons");
-            Type listType = new TypeToken<List<PushButton>>() {}.getType();
+            Type listType = new TypeToken<List<PushButton>>() {
+            }.getType();
             List<PushButton> buttons = gson.fromJson(buttonsJson, listType);
 
             Uri sound = DevinoSdk.getInstance().getSound();
 
-            showSimpleNotification(title, body, R.drawable.ic_grey_circle, icon, buttons, true, sound, pushId);
-            DevinoSdk.getInstance().pushEvent(pushId, DevinoSdk.PushStatus.DELIVERED, null);
+            boolean isSilent = "true".equalsIgnoreCase(data.get("silentPush"));
+            if (!isSilent) {
+                showSimpleNotification(title, body, R.drawable.ic_grey_circle, icon, buttons, true, sound, pushId);
+            }
 
+            DevinoSdk.getInstance().pushEvent(pushId, DevinoSdk.PushStatus.DELIVERED, null);
         }
 
     }
@@ -95,11 +100,12 @@ public class DevinoSdkPushService extends FirebaseMessagingService {
 
         if (largeIcon != null) {
             Bitmap bitmap = ImageDownloader.getBitmapFromURL(largeIcon);
-            if(bigPicture) builder.setStyle(new  NotificationCompat.BigPictureStyle().bigPicture(bitmap));
+            if (bigPicture)
+                builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap));
             builder.setLargeIcon(bitmap);
         } else
 
-        playRingtone(sound);
+            playRingtone(sound);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(113, builder.build());
