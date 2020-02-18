@@ -1,1 +1,1 @@
-include ':app', ':devinosdk'
+include ':app'
