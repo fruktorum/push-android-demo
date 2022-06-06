@@ -5,7 +5,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.devinotele.devinosdk.sdk.DevinoLogsCallback;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,11 +27,11 @@ public class RetrofitHelper {
     }
 
     @SuppressLint("CheckResult")
-    public void sendPush(FirebaseInstanceId firebaseInstanceId, Boolean picture, Boolean sound, Boolean deepLink) {
-        firebaseInstanceId.getInstanceId()
+    public void sendPush(FirebaseMessaging firebaseInstanceId, Boolean picture, Boolean sound, Boolean deepLink) {
+        firebaseInstanceId.getToken()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) { return; }
-                    String token = task.getResult().getToken();
+                    String token = task.getResult();
                     String message = "Simple push";
                     Log.d("TOKEN", token);
 
@@ -66,11 +66,11 @@ public class RetrofitHelper {
     }
 
     @SuppressLint("CheckResult")
-    public void sendPushWithDevino(FirebaseInstanceId firebaseInstanceId, Boolean picture, Boolean sound, Boolean deepLink) {
-        firebaseInstanceId.getInstanceId()
+    public void sendPushWithDevino(FirebaseMessaging firebaseInstanceId, Boolean picture, Boolean sound, Boolean deepLink) {
+        firebaseInstanceId.getToken()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) { return; }
-                    String token = task.getResult().getToken();
+                    String token = task.getResult();
                     String message = "Simple push";
 
                     HashMap<String, Object> body = new HashMap<>();
@@ -128,11 +128,11 @@ public class RetrofitHelper {
     }
 
     @SuppressLint("CheckResult")
-    public void sendPushWithDevino(FirebaseInstanceId firebaseInstanceId, String title, String text) {
-        firebaseInstanceId.getInstanceId()
+    public void sendPushWithDevino(FirebaseMessaging firebaseInstanceId, String title, String text) {
+        firebaseInstanceId.getToken()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) { return; }
-                    String token = task.getResult().getToken();
+                    String token = task.getResult();
 
                     HashMap<String, Object> body = new HashMap<>();
 

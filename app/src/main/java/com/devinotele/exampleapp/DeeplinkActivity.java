@@ -1,11 +1,12 @@
 package com.devinotele.exampleapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
-public class DeeplinkActivity extends AppCompatActivity {
+
+public class DeeplinkActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

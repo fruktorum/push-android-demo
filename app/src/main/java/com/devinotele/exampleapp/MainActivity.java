@@ -2,20 +2,17 @@ package com.devinotele.exampleapp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
 import android.view.View;
@@ -31,11 +28,15 @@ import com.devinotele.devinosdk.sdk.DevinoLogsCallback;
 import com.devinotele.devinosdk.sdk.DevinoSdk;
 import com.devinotele.exampleapp.network.RetrofitHelper;
 import com.devinotele.exampleapp.util.BriefTextWatcher;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import static com.devinotele.exampleapp.util.Util.checkEmail;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationManagerCompat;
+
+public class MainActivity extends Activity implements View.OnClickListener {
 
     private static final String SAVED_LOGS = "savedLogs";
 
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final int REQUEST_CODE_START_UPDATES = 13;
     private final int REQUEST_CODE_OTHER = 17;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,8 +129,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             logsCallback.onMessageLogged("Invalid phone or email");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void startGeo(int intervalSeconds) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             DevinoSdk.getInstance().subscribeGeo(this, intervalSeconds);
             logsCallback.onMessageLogged("Subscribed geo with interval: " + intervalSeconds + " min");
         } else {
@@ -137,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -146,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.send_push:
                 retrofitHelper.sendPushWithDevino(
-                        FirebaseInstanceId.getInstance(),
+                        FirebaseMessaging.getInstance(),
                         switchPicture.isChecked(),
                         switchSound.isChecked(),
                         switchDeeplink.isChecked()
@@ -154,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.send_geo:
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                     showGeoPermissionDialog();
                 else
                     DevinoSdk.getInstance().sendCurrentGeo();
@@ -182,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -210,10 +215,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void showLogs(Boolean show) {
         if (show) {
             logsField.setVisibility(View.VISIBLE);
-            logsIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_arrow_drop_down));
+            logsIcon.setImageDrawable(getDrawable( R.drawable.ic_arrow_drop_down));
         } else {
             logsField.setVisibility(View.GONE);
-            logsIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_arrow_drop_up));
+            logsIcon.setImageDrawable(getDrawable( R.drawable.ic_arrow_drop_up));
         }
         logsVisible = !logsVisible;
     }
@@ -248,10 +253,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         logsToggleButton.setOnClickListener(this);
 
         title.setOnLongClickListener(v -> {
-            FirebaseInstanceId firebaseInstanceId = FirebaseInstanceId.getInstance();
+            FirebaseMessaging firebaseInstanceId = FirebaseMessaging.getInstance();
 
 
-            firebaseInstanceId.getInstanceId()
+            firebaseInstanceId.getToken()
                     .addOnCompleteListener(task -> {
                         if (!task.isSuccessful()) {
                             try {
@@ -262,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                             return;
                         }
-                        String token = task.getResult().getToken();
+                        String token = task.getResult();
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText("token", token);
                         clipboard.setPrimaryClip(clip);
