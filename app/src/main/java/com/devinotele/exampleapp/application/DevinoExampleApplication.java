@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.devinotele.devinosdk.sdk.DevinoSdk;
 import com.devinotele.exampleapp.BuildConfig;
+import com.devinotele.exampleapp.R;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class DevinoExampleApplication extends Application {
@@ -17,6 +18,7 @@ public class DevinoExampleApplication extends Application {
 
         DevinoSdk.Builder builder = new DevinoSdk.Builder(this, BuildConfig.DEVINO_API_KEY, appId, fb);
         builder.build();
-
+        DevinoSdk.getInstance().setDefaultNotificationIcon(R.drawable.ic_notify_black);
+        DevinoSdk.getInstance().setDefaultNotificationIconColor(0x00FF00);
     }
 }
