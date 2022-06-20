@@ -4,7 +4,8 @@ import android.app.Application;
 
 import com.devinotele.devinosdk.sdk.DevinoSdk;
 import com.devinotele.exampleapp.BuildConfig;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.devinotele.exampleapp.R;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class DevinoExampleApplication extends Application {
 
@@ -12,11 +13,15 @@ public class DevinoExampleApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        FirebaseInstanceId fb = FirebaseInstanceId.getInstance();
+        FirebaseMessaging fb = FirebaseMessaging.getInstance();
         String appId = BuildConfig.DEVINO_APP_ID;
+        String appVersion = BuildConfig.VERSION_NAME;
 
-        DevinoSdk.Builder builder = new DevinoSdk.Builder(this, BuildConfig.DEVINO_API_KEY, appId, fb);
+        DevinoSdk.Builder builder = new DevinoSdk.Builder(this, BuildConfig.DEVINO_API_KEY, appId, appVersion, fb);
         builder.build();
 
+        DevinoSdk.getInstance().setDefaultNotificationIcon(R.drawable.ic_notify_black);
+        DevinoSdk.getInstance().setDefaultNotificationIconColor(0x00FF00);
     }
 }
+
