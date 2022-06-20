@@ -14,9 +14,9 @@ public class DevinoExampleApplication extends Application {
 
         FirebaseMessaging fb = FirebaseMessaging.getInstance();
         String appId = BuildConfig.DEVINO_APP_ID;
+        String appVersion = BuildConfig.VERSION_NAME;
 
-        DevinoSdk.Builder builder = new DevinoSdk.Builder(this, BuildConfig.DEVINO_API_KEY, appId, fb);
+        DevinoSdk.Builder builder = new DevinoSdk.Builder(this, BuildConfig.DEVINO_API_KEY, appId, appVersion, fb);
         builder.build();
-
     }
 }
