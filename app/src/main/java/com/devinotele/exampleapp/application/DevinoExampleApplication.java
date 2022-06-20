@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.devinotele.devinosdk.sdk.DevinoSdk;
 import com.devinotele.exampleapp.BuildConfig;
+import com.devinotele.exampleapp.R;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class DevinoExampleApplication extends Application {
