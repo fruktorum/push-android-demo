@@ -1,14 +1,21 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
+static def buildTime() {
+    return new Date().format("dd-MM-yyyy'T'HH-mm")
+}
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
+
     defaultConfig {
         applicationId "com.devinotele.exampleapp"
-        minSdkVersion 21
-        targetSdkVersion 32
+        minSdkVersion 23
+        targetSdkVersion 33
         versionCode 4
         versionName "0.0.13"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        setProperty("archivesBaseName", applicationId + ".demo-v" + versionCode + "(" + versionName + ")-" + buildTime())
     }
 
     signingConfigs {
@@ -43,10 +50,12 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
+
     namespace 'com.devinotele.exampleapp'
 }
 
@@ -56,13 +65,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     implementation 'com.google.firebase:firebase-core:21.0.0'
-    implementation 'com.google.firebase:firebase-messaging:23.0.5'
+    implementation 'com.google.firebase:firebase-messaging:23.1.1'
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
@@ -72,15 +81,19 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
 
     implementation 'com.github.bumptech.glide:glide:4.13.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'androidx.fragment:fragment:1.5.5'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
 
     implementation files('libs/push-android-sdk-release-1.1.8.aar')
-
     implementation "com.google.android.gms:play-services-location:19.0.1"
 
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-}
+    testImplementation 'org.mockito:mockito-core:3.3.3'
 
-apply plugin: 'com.google.gms.google-services'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'org.mockito:mockito-core:3.3.3'
+}
