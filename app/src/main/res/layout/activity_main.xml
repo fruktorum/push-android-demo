@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -14,7 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -26,7 +25,8 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_circle_grey" />
+                    android:src="@drawable/ic_circle_grey"
+                    android:contentDescription="logo" />
 
                 <TextView
                     android:id="@+id/title"
@@ -66,7 +66,8 @@
                             android:hint="phone"
                             android:inputType="number"
                             android:paddingStart="8dp"
-                            android:text="+79" />
+                            android:text="+79"
+                            android:autofillHints="" />
 
                         <EditText
                             android:id="@+id/input_email"
@@ -80,7 +81,6 @@
                             android:paddingStart="8dp" />
 
                     </LinearLayout>
-
 
                     <Button
                         android:id="@+id/button_update_user"
@@ -116,51 +116,51 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:layout_weight="0"
                     android:orientation="horizontal"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:layout_marginEnd="16dp"
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginEnd="16dp"
-                            android:layout_weight="0"
-                            android:orientation="vertical">
+                            android:layout_marginBottom="16dp"
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1"
+                                android:layout_marginEnd="16dp"
                                 android:gravity="center_vertical"
                                 android:text="Picture"
                                 android:textColor="@color/md_black_1000" />
 
-                            <TextView
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/switch_picture"
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:text="Sound"
-                                android:textColor="@color/md_black_1000" />
+                                android:layout_height="wrap_content" />
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0"
-                            android:orientation="vertical">
+                            android:layout_marginEnd="16dp"
+                            android:orientation="horizontal">
 
-                            <androidx.appcompat.widget.SwitchCompat
-                                android:id="@+id/switch_picture"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="16dp"
+                                android:gravity="center_vertical"
+                                android:text="Sound "
+                                android:textColor="@color/md_black_1000" />
 
                             <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/switch_sound"
@@ -171,36 +171,26 @@
 
                     </LinearLayout>
 
-
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:layout_marginEnd="16dp"
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="16dp"
-                            android:layout_weight="0"
-                            android:orientation="vertical">
+                            android:layout_marginBottom="16dp"
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="16dp"
                                 android:gravity="center_vertical"
                                 android:text="Deep Link"
                                 android:textColor="@color/md_black_1000" />
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0"
-                            android:orientation="vertical">
 
                             <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/switch_deeplink"
@@ -211,9 +201,7 @@
 
                     </LinearLayout>
 
-
                 </LinearLayout>
-
 
                 <Button
                     android:id="@+id/send_push"
@@ -253,7 +241,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_arrow_drop_down" />
+                            android:src="@drawable/ic_arrow_drop_down"
+                            android:contentDescription="toggle_icon" />
 
                     </FrameLayout>
 
@@ -285,7 +274,8 @@
                             android:layout_gravity="end|top"
                             android:layout_margin="16dp"
                             android:alpha=".5"
-                            android:src="@drawable/ic_delete_black_24dp" />
+                            android:src="@drawable/ic_delete_black_24dp"
+                            android:contentDescription="clear" />
 
                         <TextView
                             android:id="@+id/version_name"
@@ -298,12 +288,12 @@
                             tools:text="version"/>
                     </FrameLayout>
 
-
                 </LinearLayout>
 
             </LinearLayout>
 
-
         </LinearLayout>
-    </ScrollView>
+
+    </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>
