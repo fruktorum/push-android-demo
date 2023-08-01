@@ -149,7 +149,6 @@
                                 android:text="Sound"
                                 android:textColor="@color/md_black_1000" />
 
-
                         </LinearLayout>
 
                         <LinearLayout
@@ -158,12 +157,12 @@
                             android:layout_weight="0"
                             android:orientation="vertical">
 
-                            <Switch
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/switch_picture"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent" />
 
-                            <Switch
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/switch_sound"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent" />
@@ -188,7 +187,7 @@
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:text="Deep Link"
@@ -203,7 +202,7 @@
                             android:layout_weight="0"
                             android:orientation="vertical">
 
-                            <Switch
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/switch_deeplink"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent" />

@@ -1,71 +1,22 @@
 package com.devinotele.exampleapp.network;
 
-
 import android.annotation.SuppressLint;
 import android.util.Log;
-
 import com.devinotele.devinosdk.sdk.DevinoLogsCallback;
 import com.devinotele.exampleapp.BuildConfig;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.util.Arrays;
 import java.util.HashMap;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-
 public class RetrofitHelper {
 
-    private FirebaseApi firebaseApi;
     private DevinoPushApi devinoPushApi;
     private DevinoLogsCallback callback;
 
     public RetrofitHelper(DevinoLogsCallback callback) {
-        firebaseApi = RetrofitClientInstance.getRetrofitInstance().create(FirebaseApi.class);
         devinoPushApi = RetrofitClientInstance.getRetrofitInstanceForDevinoPush().create(DevinoPushApi.class);
         this.callback = callback;
-    }
-
-    @SuppressLint("CheckResult")
-    public void sendPush(FirebaseMessaging firebaseInstanceId, Boolean picture, Boolean sound, Boolean deepLink) {
-        firebaseInstanceId.getToken()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        return;
-                    }
-                    String token = task.getResult();
-                    String message = "Simple push";
-                    Log.d("TOKEN", token);
-
-                    HashMap<String, Object> body = new HashMap<>();
-                    HashMap<String, Object> data = new HashMap<>();
-                    data.put("title", "Devino");
-
-
-                    if (deepLink) {
-                        message += " & Button";
-                        HashMap<String, Object> button = new HashMap<>();
-                        button.put("text", "Action");
-                        button.put("deeplink", "devino://first");
-                        button.put("picture", "https://avatars.mds.yandex.net/get-pdb/163339/224697a1-db7d-4d02-a12f-aa70383fadc3/s1200");
-                        data.put("buttons", Arrays.asList(button));
-                    }
-                    if (picture) {
-                        message += " & Picture";
-                        data.put("icon", "https://avatars.mds.yandex.net/get-pdb/163339/224697a1-db7d-4d02-a12f-aa70383fadc3/s1200");
-                    }
-
-                    data.put("body", message);
-                    body.put("to", token);
-                    body.put("data", data);
-                    firebaseApi.sendPush(body)
-                            .subscribeOn(Schedulers.newThread())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(
-                                    object -> System.out.println(object.toString()),
-                                    Throwable::printStackTrace);
-                });
     }
 
     @SuppressLint("CheckResult")

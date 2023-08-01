@@ -10,7 +10,6 @@ import android.content.ContentResolver;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.telephony.PhoneNumberUtils;
@@ -21,7 +20,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.devinotele.devinosdk.sdk.DevinoLogsCallback;
@@ -29,33 +27,29 @@ import com.devinotele.devinosdk.sdk.DevinoSdk;
 import com.devinotele.exampleapp.network.RetrofitHelper;
 import com.devinotele.exampleapp.util.BriefTextWatcher;
 import com.google.firebase.messaging.FirebaseMessaging;
-
 import static com.devinotele.exampleapp.util.Util.checkEmail;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.NotificationManagerCompat;
+import java.util.Objects;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private static final String SAVED_LOGS = "savedLogs";
-
     private String logs = "";
     private TextView logsView;
     private EditText email, phone;
-    private Switch switchSound, switchPicture, switchDeeplink;
+    private SwitchCompat switchSound, switchPicture, switchDeeplink;
     private DevinoLogsCallback logsCallback;
     private Boolean logsVisible = false;
     private FrameLayout logsField;
     private ImageView logsIcon;
     private ScrollView logsScrollView;
     private RetrofitHelper retrofitHelper;
-
     private final int REQUEST_CODE_SEND_GEO = 11;
     private final int REQUEST_CODE_START_UPDATES = 13;
-    private final int REQUEST_CODE_OTHER = 17;
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +77,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         DevinoSdk.getInstance().requestLogs(logsCallback);
         DevinoSdk.getInstance().appStarted();
 
-        startGeo(1);
+        startGeo();
 
     }
 
@@ -113,15 +107,33 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void doRegistration() {
-        email.setBackground(getDrawable(R.drawable.ic_border_grey));
-        phone.setBackground(getDrawable(R.drawable.ic_border_grey));
+        email.setBackground(
+                AppCompatResources.getDrawable(
+                        getApplicationContext(),
+                        R.drawable.ic_border_grey
+                )
+        );
+        phone.setBackground(
+                AppCompatResources.getDrawable(
+                        getApplicationContext(),
+                        R.drawable.ic_border_grey
+                )
+        );
 
         Boolean emailOk = checkEmail(email.getText().toString());
         Boolean phoneOk = PhoneNumberUtils.isGlobalPhoneNumber(phone.getText().toString()) &&
                 phone.getText().length() == 12;
 
-        if (!emailOk) email.setBackground(getDrawable(R.drawable.ic_border_red));
-        if (!phoneOk) phone.setBackground(getDrawable(R.drawable.ic_border_red));
+        if (!emailOk) email.setBackground(
+                AppCompatResources.getDrawable(
+                        getApplicationContext(),
+                        R.drawable.ic_border_red)
+        );
+        if (!phoneOk) phone.setBackground(
+                AppCompatResources.getDrawable(
+                        getApplicationContext(),
+                        R.drawable.ic_border_red)
+        );
 
         if (phoneOk && emailOk)
             DevinoSdk.getInstance().register(phone.getText().toString(), email.getText().toString());
@@ -129,18 +141,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
             logsCallback.onMessageLogged("Invalid phone or email");
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void startGeo(int intervalSeconds) {
+    private void startGeo() {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            DevinoSdk.getInstance().subscribeGeo(this, intervalSeconds);
-            logsCallback.onMessageLogged("Subscribed geo with interval: " + intervalSeconds + " min");
+            DevinoSdk.getInstance().subscribeGeo(this, 1);
+            logsCallback.onMessageLogged("Subscribed geo with interval: " + 1 + " min");
         } else {
             logsCallback.onMessageLogged("GEO PERMISSION MISSING!");
             DevinoSdk.getInstance().requestGeoPermission(this, REQUEST_CODE_START_UPDATES);
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -186,21 +196,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 .show();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case REQUEST_CODE_START_UPDATES: {
+            case REQUEST_CODE_START_UPDATES -> {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     logsCallback.onMessageLogged("GEO PERMISSION GRANTED");
-                    startGeo(1);
+                    startGeo();
                 } else {
                     logsCallback.onMessageLogged("PERMISSION DENIED");
                 }
             }
-            break;
-            case REQUEST_CODE_SEND_GEO: {
+            case REQUEST_CODE_SEND_GEO -> {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     logsCallback.onMessageLogged("GEO PERMISSION GRANTED");
                     DevinoSdk.getInstance().sendCurrentGeo();
@@ -208,17 +216,26 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     logsCallback.onMessageLogged("PERMISSION DENIED");
                 }
             }
-
         }
     }
 
     private void showLogs(Boolean show) {
         if (show) {
             logsField.setVisibility(View.VISIBLE);
-            logsIcon.setImageDrawable(getDrawable( R.drawable.ic_arrow_drop_down));
+            logsIcon.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                            getApplicationContext(),
+                            R.drawable.ic_arrow_drop_down
+                    )
+            );
         } else {
             logsField.setVisibility(View.GONE);
-            logsIcon.setImageDrawable(getDrawable( R.drawable.ic_arrow_drop_up));
+            logsIcon.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                            getApplicationContext(),
+                            R.drawable.ic_arrow_drop_up
+                    )
+            );
         }
         logsVisible = !logsVisible;
     }
@@ -260,7 +277,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     .addOnCompleteListener(task -> {
                         if (!task.isSuccessful()) {
                             try {
-                                logsCallback.onMessageLogged("Firebase Error: " + task.getException().getMessage());
+                                logsCallback.onMessageLogged("Firebase Error: " + Objects.requireNonNull(task.getException()).getMessage());
                             } catch (Throwable error) {
                                 error.printStackTrace();
                                 return;
