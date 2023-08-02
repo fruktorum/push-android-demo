@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/app_header"
+                layout="@layout/app_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/md_grey_200"
+                    android:orientation="vertical" >
+
+                    <Button
+                        android:id="@+id/btn_registration"
+                        android:layout_width="match_parent"
+                        style="@style/ButtonWide"
+                        android:layout_margin="16dp"
+                        android:background="@drawable/ic_button_green"
+                        android:text="@string/registration"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/send_geo"
+                    android:layout_width="match_parent"
+                    style="@style/ButtonWide"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/ic_button_blue"
+                    android:text="@string/send_geo" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/md_grey_200" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="16dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/picture"
+                                style="@style/TextRegular" />
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/switch_picture"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="16dp"
+                                style="@style/TextRegular"
+                                android:gravity="center_vertical"
+                                android:text="@string/sound" />
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/switch_sound"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="16dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/deep_link"
+                                style="@style/TextRegular" />
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/switch_deeplink"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/send_push"
+                    android:layout_width="match_parent"
+                    android:layout_margin="16dp"
+                    style="@style/ButtonWide"
+                    android:background="@drawable/ic_button_blue"
+                    android:text="@string/send_notification" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/md_grey_200" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:gravity="bottom"
+                    android:background="@drawable/ic_border_grey"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:id="@+id/logs_toggle_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:background="@color/md_grey_300" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/logs"
+                            style="@style/TextRegular"/>
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/logs_field"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ScrollView
+                            android:id="@+id/logs_scroll_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="4dp"
+                            android:paddingEnd="4dp"
+                            android:scrollbarAlwaysDrawVerticalTrack="true">
+
+                            <TextView
+                                android:id="@+id/logs_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp" />
+
+                        </ScrollView>
+
+                        <ImageView
+                            android:id="@+id/clear_logs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|top"
+                            android:layout_margin="16dp"
+                            android:src="@drawable/ic_delete_black_24dp"
+                            android:contentDescription="@string/clean_logs" />
+
+                        <TextView
+                            android:id="@+id/version_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginBottom="4dp"
+                            android:textSize="11sp"
+                            android:layout_gravity="start|bottom"
+                            tools:text="version"/>
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

@@ -1,42 +1,86 @@
 package com.devinotele.exampleapp;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.ContentResolver;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.telephony.PhoneNumberUtils;
-import android.text.Editable;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.util.Log;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import com.devinotele.devinosdk.sdk.DevinoLogsCallback;
 import com.devinotele.devinosdk.sdk.DevinoSdk;
-import com.devinotele.exampleapp.network.RetrofitHelper;
-import com.devinotele.exampleapp.util.BriefTextWatcher;
-import com.google.firebase.messaging.FirebaseMessaging;
-import static com.devinotele.exampleapp.util.Util.checkEmail;
-import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.app.NotificationManagerCompat;
-import java.util.Objects;
+import io.reactivex.subjects.ReplaySubject;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements MainActivityCallback {
 
-    private static final String SAVED_LOGS = "savedLogs";
+    NavController navController;
+    NavHostFragment navHostFragment;
+    private DevinoLogsCallback logsCallback;
+    public String logs = "";
+    public ReplaySubject<String> logsRx = ReplaySubject.create();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
+        assert navHostFragment != null;
+        navController = navHostFragment.getNavController();
+
+        DevinoSdk.getInstance().requestLogs(getLogsCallback());
+        DevinoSdk.getInstance().appStarted();
+    }
+
+    private void createLogsCallback() {
+        logsCallback = message -> runOnUiThread(
+                () -> {
+                    logs = "\n" + message.replaceAll("\"", "\'") + "\n";
+                    logsRx.onNext(logs);
+                    Log.d(getString(R.string.logs_tag), logs);
+                }
+        );
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boolean notificationsEnabled =
+                NotificationManagerCompat.from(this).areNotificationsEnabled();
+        if (!notificationsEnabled) {
+            logsCallback.onMessageLogged("Notifications are disabled for this application.");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Integer REQUEST_CODE_NOTIFICATION = 14;
+                DevinoSdk.getInstance().requestNotificationPermission(
+                        this,
+                        REQUEST_CODE_NOTIFICATION
+                );
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        DevinoSdk.getInstance().unsubscribeLogs();
+        DevinoSdk.getInstance().stop();
+        super.onDestroy();
+    }
+
+    @Override
+    public DevinoLogsCallback getLogsCallback() {
+        if (logsCallback == null) {
+            createLogsCallback();
+        }
+        return logsCallback;
+    }
+
+    @Override
+    public ReplaySubject<String> getLogs() {
+        return logsRx;
+    }
+
+
+/*    private static final String SAVED_LOGS = "savedLogs";
     private String logs = "";
     private TextView logsView;
     private EditText email, phone;
@@ -59,7 +103,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setUpViews();
         showLogs(false);
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             logs = savedInstanceState.getString(SAVED_LOGS);
             logsView.setText(logs);
         }
@@ -330,6 +374,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 }

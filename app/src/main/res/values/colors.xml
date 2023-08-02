@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#707070</color>
     <color name="colorAccent">@color/generalBlue</color>
     <color name="generalBlue">#3478F6</color>
+
+    <color name="generalGreen">#F515BA5B</color>
+    <color name="generalRed">#EB5757</color>
+    <color name="generalGrey">#D9D9D9</color>
 </resources>

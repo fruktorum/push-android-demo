@@ -79,7 +79,7 @@ public class RetrofitHelper {
                                         callback.onMessageLogged(object.toString());
                                         System.out.println(object);
                                     },
-                                    error -> error.printStackTrace()
+                                    Throwable::printStackTrace
                             );
                 });
     }

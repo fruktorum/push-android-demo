@@ -1,4 +1,46 @@
 <resources>
     <string name="app_name">Devino Example</string>
     <string name="version_placeholder">version: %s</string>
+    <string name="devino_telecom">Devino Telecom</string>
+
+    <string name="device_type">phone</string>
+    <string name="api_base_url">https://api.ihub.net/push/3.0/</string>
+
+    <string name="user_email">User Email</string>
+    <string name="email_hint">email</string>
+    <string name="text_79">+79</string>
+    <string name="invalid_phone_or_email">Invalid phone or email</string>
+    <string name="user_phone">User Phone</string>
+    <string name="skip_registration">Skip registration</string>
+    <string name="api_url">API Url</string>
+    <string name="api_url_hint">API root url</string>
+    <string name="confirm_root_url">Confirm Root Url</string>
+    <string name="register">Register</string>
+
+    <string name="task_tag">DevinoPushLogs</string>
+    <string name="logs_tag">DevinoPushLogs</string>
+
+    <string name="logs">Logs</string>
+    <string name="clean_logs">Clean logs</string>
+
+    <string name="class_cast_exception">Activity must implement fragment`s MainActivityCallback.</string>
+    <string name="error_registration">Error:</string>
+    <string name="error_phone_email">Invalid phone or email</string>
+
+    <string name="notifications_disabled">Notifications are disabled for this application.</string>
+    <string name="registration">Registration</string>
+
+    <string name="subscribed_geo_interval">Subscribed geo with interval: </string>
+    <string name="min"> min</string>
+    <string name="geo_permission_missing">GEO PERMISSION MISSING!</string>
+    <string name="send_geo">Send Geo</string>
+    <string name="send_notification">Send Notification</string>
+    <string name="picture">Picture</string>
+    <string name="sound">Sound </string>
+    <string name="deep_link">Deep Link</string>
+
+    <string name="error_remove_registration">Error during removed registration:</string>
+    <string name="error_send_push">Error during send push:</string>
+    <string name="error_send_geo">Error during send geo:</string>
+    <string name="error_firebase">Firebase Error: </string>
 </resources>

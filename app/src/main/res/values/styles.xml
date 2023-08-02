@@ -8,7 +8,27 @@
         <!-- Customize Switch. -->
         <item name="thumbTint">@color/colorPrimary</item>
         <item name="trackTint">@color/switch_track_color</item>
+    </style>
 
+    <style name="NotCapsButton" parent="Widget.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="TextRegular">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/md_black_1000</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="ButtonWide">
+        <item name="android:layout_height">60dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:layout_marginStart">45dp</item>
+        <item name="android:layout_marginEnd">45dp</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
 </resources>
