@@ -87,7 +87,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
                     userPhone.setText(newValue);
                 }
                 if (s.length() > 12) userPhone.setText(s.subSequence(0, 12));
-                userPhone.setSelection(phoneValueLength);
+                //userPhone.setSelection(phoneValueLength);
             }
         });
 

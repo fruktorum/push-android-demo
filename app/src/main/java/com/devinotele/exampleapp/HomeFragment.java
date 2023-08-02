@@ -167,9 +167,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         clearLogs.setOnClickListener(this);
 
         if (isRegisteredUser) {
-            registration.setVisibility(View.VISIBLE);
-        } else {
             registration.setVisibility(View.GONE);
+        } else {
+            registration.setVisibility(View.VISIBLE);
         }
 
         title.setOnLongClickListener(v -> {
