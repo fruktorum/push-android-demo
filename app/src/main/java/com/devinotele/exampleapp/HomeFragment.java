@@ -235,48 +235,47 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        switch (v.getId()) {
-            case R.id.btn_registration:
-                if (!isRegisteredUser) {
-                    navController.navigate(R.id.registrationFragment);
-                }
-                break;
 
-            case R.id.clear_logs:
-                logsLocal = "\n";
-                logsView.setText(logsLocal);
-                break;
+        if (v.getId() == R.id.btn_registration) {
+            if (!isRegisteredUser) {
+                navController.navigate(R.id.registrationFragment);
+            }
+        }
 
-            case R.id.send_push:
-                try {
-                    retrofitHelper.sendPushWithDevino(
-                            FirebaseMessaging.getInstance(),
-                            switchPicture.isChecked(),
-                            switchSound.isChecked(),
-                            switchDeeplink.isChecked()
-                    );
-                } catch (Exception e) {
-                    Log.d(
-                            getString(R.string.logs_tag),
-                            getString(R.string.error_send_push) + " " + e.getMessage()
-                    );
-                }
-                break;
+        if (v.getId() == R.id.clear_logs) {
+            logsLocal = "\n";
+            logsView.setText(logsLocal);
+        }
 
-            case R.id.send_geo:
-                try {
-                    if (ActivityCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        showGeoPermissionDialog();
-                    } else
-                        DevinoSdk.getInstance().sendCurrentGeo();
-                } catch (Exception e) {
-                    Log.d(
-                            getString(R.string.logs_tag),
-                            getString(R.string.error_send_geo) + " " + e.getMessage()
-                    );
-                    break;
-                }
+        if (v.getId() == R.id.send_push) {
+            try {
+                retrofitHelper.sendPushWithDevino(
+                        FirebaseMessaging.getInstance(),
+                        switchPicture.isChecked(),
+                        switchSound.isChecked(),
+                        switchDeeplink.isChecked()
+                );
+            } catch (Exception e) {
+                Log.d(
+                        getString(R.string.logs_tag),
+                        getString(R.string.error_send_push) + " " + e.getMessage()
+                );
+            }
+        }
+
+        if (v.getId() == R.id.send_geo) {
+            try {
+                if (ActivityCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    showGeoPermissionDialog();
+                } else
+                    DevinoSdk.getInstance().sendCurrentGeo();
+            } catch (Exception e) {
+                Log.d(
+                        getString(R.string.logs_tag),
+                        getString(R.string.error_send_geo) + " " + e.getMessage()
+                );
+            }
         }
     }
 

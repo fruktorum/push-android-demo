@@ -43,4 +43,5 @@
     <string name="error_send_push">Error during send push:</string>
     <string name="error_send_geo">Error during send geo:</string>
     <string name="error_firebase">Firebase Error: </string>
+
 </resources>

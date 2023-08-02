@@ -80,14 +80,17 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         userPhone.addTextChangedListener(new BriefTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() < 3) userPhone.setText(getString(R.string.text_79));
+                if (s.length() < 3) {
+                    userPhone.setText(getString(R.string.text_79));
+                }
                 else if (!s.subSequence(0, 3).toString().equals(getString(R.string.text_79))) {
                     String prefix = s.subSequence(0, 3).toString();
                     String newValue = s.toString().replace(prefix, getString(R.string.text_79));
                     userPhone.setText(newValue);
                 }
-                if (s.length() > 12) userPhone.setText(s.subSequence(0, 12));
-                //userPhone.setSelection(phoneValueLength);
+                if (s.length() > 12) {
+                    userPhone.setText(s.subSequence(0, 12));
+                }
             }
         });
 
@@ -132,42 +135,40 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        switch (v.getId()) {
-            case R.id.btn_registration:
-                try {
-                    doRegistration(navController);
-                } catch (Exception e) {
-                    new AlertDialog.Builder(requireContext())
-                            .setTitle(e.getLocalizedMessage())
-                            .setMessage(Arrays.toString(e.getStackTrace()))
-                            .setPositiveButton(android.R.string.yes, null)
-                            .show();
-                }
-                break;
+        if (v.getId() == R.id.btn_registration) {
+            try {
+                doRegistration(navController);
+            } catch (Exception e) {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle(e.getLocalizedMessage())
+                        .setMessage(Arrays.toString(e.getStackTrace()))
+                        .setPositiveButton(android.R.string.yes, null)
+                        .show();
+            }
+        }
 
-            case R.id.text_skip_registration:
-                try {
-                    navigateToHomeScreen(navController, false);
-                } catch (Exception e) {
-                    new AlertDialog.Builder(requireContext())
-                            .setTitle(e.getLocalizedMessage())
-                            .setMessage(Arrays.toString(e.getStackTrace()))
-                            .setPositiveButton(android.R.string.yes, null)
-                            .show();
-                }
-                break;
+        if (v.getId() == R.id.text_skip_registration) {
+            try {
+                navigateToHomeScreen(navController, false);
+            } catch (Exception e) {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle(e.getLocalizedMessage())
+                        .setMessage(Arrays.toString(e.getStackTrace()))
+                        .setPositiveButton(android.R.string.yes, null)
+                        .show();
+            }
+        }
 
-            case R.id.btn_confirm_root_url:
-                try {
-                    updateBaseApiUrl();
-                } catch (Exception e) {
-                    new AlertDialog.Builder(requireContext())
-                            .setTitle(e.getLocalizedMessage())
-                            .setMessage(Arrays.toString(e.getStackTrace()))
-                            .setPositiveButton(android.R.string.yes, null)
-                            .show();
-                }
-                break;
+        if (v.getId() == R.id.btn_confirm_root_url) {
+            try {
+                updateBaseApiUrl();
+            } catch (Exception e) {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle(e.getLocalizedMessage())
+                        .setMessage(Arrays.toString(e.getStackTrace()))
+                        .setPositiveButton(android.R.string.yes, null)
+                        .show();
+            }
         }
     }
 
@@ -216,6 +217,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
 
     private void updateBaseApiUrl() {
         String newBaseApiUrl = apiBaseUrl.getText().toString();
+        // TODO when method for api url will add to sdk
         // DevinoSdk.getInstance().updateBaseApiUrl(newBaseApiUrl, requireContext());
     }
 }
