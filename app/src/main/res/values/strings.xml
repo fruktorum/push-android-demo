@@ -4,7 +4,7 @@
     <string name="devino_telecom">Devino Telecom</string>
 
     <string name="device_type">phone</string>
-    <string name="api_base_url">https://api.ihub.net/push/3.0/</string>
+    <string name="api_base_url">https://integrationapi.net/push/sdk/</string>
 
     <string name="user_email">User Email</string>
     <string name="email_hint">email</string>

@@ -86,10 +86,10 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_registration"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
             android:layout_marginTop="53dp"
             android:background="@drawable/ic_button_blue"
             android:text="@string/register"
+            android:textAllCaps="false"
             android:textColor="@color/md_white_1000"
             style="@style/ButtonWide" />
 

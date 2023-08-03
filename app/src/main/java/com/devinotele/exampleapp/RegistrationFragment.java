@@ -217,7 +217,6 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
 
     private void updateBaseApiUrl() {
         String newBaseApiUrl = apiBaseUrl.getText().toString();
-        // TODO when method for api url will add to sdk
-        // DevinoSdk.getInstance().updateBaseApiUrl(newBaseApiUrl, requireContext());
+        DevinoSdk.getInstance().updateBaseApiUrl(newBaseApiUrl, requireContext());
     }
 }
