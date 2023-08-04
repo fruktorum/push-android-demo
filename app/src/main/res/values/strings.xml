@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Devino Example</string>
-    <string name="version_placeholder">version: %s</string>
+    <string name="version_placeholder">version V1: %s</string>
     <string name="devino_telecom">Devino Telecom</string>
 
     <string name="device_type">phone</string>
@@ -22,6 +22,10 @@
 
     <string name="logs">Logs</string>
     <string name="clean_logs">Clean logs</string>
+    <string name="copy_log">Copy Log</string>
+    <string name="copy_token">Copy Token</string>
+    <string name="token_copied">The token has been copied.</string>
+    <string name="log_copied">The log has been copied.</string>
 
     <string name="class_cast_exception">Activity must implement fragment`s MainActivityCallback.</string>
     <string name="error_registration">Error:</string>
@@ -40,8 +44,6 @@
     <string name="picture">Picture</string>
     <string name="sound">Sound\u0020</string>
     <string name="deep_link">Deep Link</string>
-    <string name="copy_log">Copy Log</string>
-    <string name="copy_token">Copy Token</string>
 
     <string name="error_remove_registration">Error during removed registration:</string>
     <string name="error_send_push">Error during send push:</string>

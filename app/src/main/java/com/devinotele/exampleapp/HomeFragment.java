@@ -21,11 +21,11 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.core.app.ActivityCompat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     boolean isRegisteredUser;
     ReplaySubject<String> logsRx;
     private TextView logsView;
-    private String logsLocal;
+    private String logsLocal, logToCopy;
     private DevinoLogsCallback logsCallback;
     private MainActivityCallback mainActivityCallback;
     private ScrollView logsScrollView;
@@ -98,6 +98,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onNext(String log) {
                 String logs = logsView.getText().toString() + log;
                 logsView.setText(logs);
+                logToCopy = logs;
                 scrollDown(logsScrollView);
             }
 
@@ -114,7 +115,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        boolean notificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled();
+        boolean notificationsEnabled =
+                NotificationManagerCompat.from(requireContext()).areNotificationsEnabled();
         if (!notificationsEnabled) {
             logsCallback.onMessageLogged(getString(R.string.notifications_disabled));
         }
@@ -139,7 +141,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void setUpViews() {
         logsView = requireView().findViewById(R.id.logs_view);
-        TextView title = requireView().findViewById(R.id.title);
         logsScrollView = requireView().findViewById(R.id.logs_scroll_view);
         ImageView clearLogs = requireView().findViewById(R.id.clear_logs);
         TextView version = requireView().findViewById(R.id.version_name);
@@ -151,11 +152,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         Button sendGeo = requireView().findViewById(R.id.send_geo);
         Button sendPush = requireView().findViewById(R.id.send_push);
         Button registration = requireView().findViewById(R.id.btn_registration);
+        Button copyToken = requireView().findViewById(R.id.copy_token);
+        Button copyLog = requireView().findViewById(R.id.copy_log);
 
         sendGeo.setOnClickListener(this);
         sendPush.setOnClickListener(this);
         registration.setOnClickListener(this);
         clearLogs.setOnClickListener(this);
+        copyToken.setOnClickListener(this);
+        copyLog.setOnClickListener(this);
 
         if (isRegisteredUser) {
             registration.setVisibility(View.GONE);
@@ -163,55 +168,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             registration.setVisibility(View.VISIBLE);
         }
 
-        title.setOnLongClickListener(v -> {
-            FirebaseMessaging firebaseInstanceId = FirebaseMessaging.getInstance();
-
-            firebaseInstanceId.getToken()
-                    .addOnCompleteListener(task -> {
-                        if (!task.isSuccessful()) {
-                            try {
-                                logsCallback.onMessageLogged(
-                                        getString(
-                                                R.string.error_firebase
-                                        ) + Objects.requireNonNull(
-                                                task.getException()
-                                        ).getMessage()
-                                );
-                            } catch (Throwable error) {
-                                error.printStackTrace();
-                                return;
-                            }
-                            return;
-                        }
-                        String token = task.getResult();
-                        ClipboardManager clipboard =
-                                (ClipboardManager) requireContext().getSystemService(CLIPBOARD_SERVICE);
-                        ClipData clip = ClipData.newPlainText("token", token);
-                        clipboard.setPrimaryClip(clip);
-
-                        Toast.makeText(
-                                requireContext(),
-                                "token copied",
-                                Toast.LENGTH_SHORT
-                        ).show();
-                    });
-            return false;
-        });
-
         switchSound.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    if (isChecked) {
-                        Uri sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
-                                + "://"
-                                + requireContext().getPackageName()
-                                + "/" + R.raw.push_sound
-                        );
-                        DevinoSdk.getInstance().setCustomSound(sound);
-                    } else {
-                        DevinoSdk.getInstance().useDefaultSound();
-                    }
-
-                }
-        );
+            if (isChecked) {
+                Uri sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
+                        + "://"
+                        + requireContext().getPackageName()
+                        + "/" + R.raw.push_sound
+                );
+                DevinoSdk.getInstance().setCustomSound(sound);
+            } else {
+                DevinoSdk.getInstance().useDefaultSound();
+            }
+        });
 
         try {
             PackageInfo pInfo = requireContext()
@@ -225,7 +193,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        NavController navController =
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
 
         if (v.getId() == R.id.btn_registration) {
             if (!isRegisteredUser) {
@@ -267,6 +236,47 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         getString(R.string.error_send_geo) + " " + e.getMessage()
                 );
             }
+        }
+
+        if (v.getId() == R.id.copy_token) {
+            FirebaseMessaging firebaseInstanceId = FirebaseMessaging.getInstance();
+            firebaseInstanceId.getToken().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()) {
+                    try {
+                        logsCallback.onMessageLogged(
+                                getString(R.string.error_firebase)
+                                        + Objects.requireNonNull(task.getException()).getMessage()
+                        );
+                    } catch (Throwable error) {
+                        error.printStackTrace();
+                    }
+                } else {
+                    String token = task.getResult();
+                    ClipboardManager clipboard = (ClipboardManager) requireContext()
+                            .getSystemService(CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("token", token);
+                    clipboard.setPrimaryClip(clip);
+
+                    Toast.makeText(
+                            requireContext(),
+                            getString(R.string.token_copied),
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
+            });
+        }
+
+        if (v.getId() == R.id.copy_log) {
+            ClipboardManager clipboard = (ClipboardManager) requireContext()
+                    .getSystemService(CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("logToCopy", logToCopy);
+            clipboard.setPrimaryClip(clip);
+
+            Toast.makeText(
+                    requireContext(),
+                    getString(R.string.log_copied),
+                    Toast.LENGTH_SHORT
+            ).show();
         }
     }
 
