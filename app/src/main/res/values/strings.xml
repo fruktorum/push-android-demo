@@ -40,6 +40,8 @@
     <string name="picture">Picture</string>
     <string name="sound">Sound\u0020</string>
     <string name="deep_link">Deep Link</string>
+    <string name="copy_log">Copy Log</string>
+    <string name="copy_token">Copy Token</string>
 
     <string name="error_remove_registration">Error during removed registration:</string>
     <string name="error_send_push">Error during send push:</string>

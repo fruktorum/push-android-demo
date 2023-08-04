@@ -3,7 +3,6 @@ package com.devinotele.exampleapp;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.Context.CLIPBOARD_SERVICE;
 import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
-
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -23,7 +22,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -32,14 +30,11 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import com.devinotele.devinosdk.sdk.DevinoLogsCallback;
 import com.devinotele.devinosdk.sdk.DevinoSdk;
 import com.devinotele.exampleapp.network.RetrofitHelper;
 import com.google.firebase.messaging.FirebaseMessaging;
-
 import java.util.Objects;
-
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.ReplaySubject;
