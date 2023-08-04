@@ -54,10 +54,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private MainActivityCallback mainActivityCallback;
     private ScrollView logsScrollView;
     private static final String SAVED_LOGS = "savedLogs";
-    private Button removeRegistration, registration;
     private RetrofitHelper retrofitHelper;
     private final int REQUEST_CODE_SEND_GEO = 11;
-    private final int REQUEST_CODE_START_UPDATES = 13;
     private SwitchCompat switchSound, switchPicture, switchDeeplink;
 
     public HomeFragment() {
@@ -116,8 +114,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onError(Throwable e) {
             }
         });
-
-        startGeo();
     }
 
     @Override
@@ -279,25 +275,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void removeUpdateRegistrationUi() {
-        isRegisteredUser = false;
-        removeRegistration.setVisibility(View.GONE);
-        registration.setText(getString(R.string.registration));
-    }
-
     private void scrollDown(ScrollView scrollView) {
         scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
-    }
-
-    private void startGeo() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            DevinoSdk.getInstance().subscribeGeo(requireContext(), 1);
-            logsCallback.onMessageLogged(getString(R.string.subscribed_geo_interval) + 1 + getString(R.string.min));
-        } else {
-            logsCallback.onMessageLogged(getString(R.string.geo_permission_missing));
-            DevinoSdk.getInstance().requestGeoPermission(requireActivity(), REQUEST_CODE_START_UPDATES);
-        }
     }
 
     private void showGeoPermissionDialog() {
@@ -310,28 +289,4 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 .setNegativeButton(android.R.string.no, null)
                 .show();
     }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_CODE_START_UPDATES -> {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    logsCallback.onMessageLogged("GEO PERMISSION GRANTED");
-                    startGeo();
-                } else {
-                    logsCallback.onMessageLogged("PERMISSION DENIED");
-                }
-            }
-            case REQUEST_CODE_SEND_GEO -> {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    logsCallback.onMessageLogged("GEO PERMISSION GRANTED");
-                    DevinoSdk.getInstance().sendCurrentGeo();
-                } else {
-                    logsCallback.onMessageLogged("PERMISSION DENIED");
-                }
-            }
-        }
-    }
-
 }

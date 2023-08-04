@@ -33,10 +33,12 @@
     <string name="subscribed_geo_interval">Subscribed geo with interval: </string>
     <string name="min"> min</string>
     <string name="geo_permission_missing">GEO PERMISSION MISSING!</string>
+    <string name="geo_permission_granted">GEO PERMISSION GRANTED</string>
+    <string name="permission_denied">PERMISSION DENIED</string>
     <string name="send_geo">Send Geo</string>
     <string name="send_notification">Send Notification</string>
     <string name="picture">Picture</string>
-    <string name="sound">Sound </string>
+    <string name="sound">Sound\u0020</string>
     <string name="deep_link">Deep Link</string>
 
     <string name="error_remove_registration">Error during removed registration:</string>

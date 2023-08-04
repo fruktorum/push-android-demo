@@ -1,9 +1,13 @@
 package com.devinotele.exampleapp;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -18,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
     private DevinoLogsCallback logsCallback;
     public String logs = "";
     public ReplaySubject<String> logsRx = ReplaySubject.create();
+    private final int REQUEST_CODE_START_UPDATES = 13;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
 
         DevinoSdk.getInstance().requestLogs(getLogsCallback());
         DevinoSdk.getInstance().appStarted();
+
+        startGeo();
+
     }
 
     private void createLogsCallback() {
@@ -77,5 +85,40 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
     @Override
     public ReplaySubject<String> getLogs() {
         return logsRx;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        final int REQUEST_CODE_SEND_GEO = 11;
+        switch (requestCode) {
+            case REQUEST_CODE_START_UPDATES -> {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    logsCallback.onMessageLogged(getString(R.string.geo_permission_granted));
+                    startGeo();
+                } else {
+                    logsCallback.onMessageLogged(getString(R.string.permission_denied));
+                }
+            }
+            case REQUEST_CODE_SEND_GEO -> {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    logsCallback.onMessageLogged(getString(R.string.geo_permission_granted));
+                    DevinoSdk.getInstance().sendCurrentGeo();
+                } else {
+                    logsCallback.onMessageLogged(getString(R.string.permission_denied));
+                }
+            }
+        }
+    }
+
+    private void startGeo() {
+        if (ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            DevinoSdk.getInstance().subscribeGeo(this, 1);
+            logsCallback.onMessageLogged(getString(R.string.subscribed_geo_interval) + 1 + getString(R.string.min));
+        } else {
+            logsCallback.onMessageLogged(getString(R.string.geo_permission_missing));
+            DevinoSdk.getInstance().requestGeoPermission(this, REQUEST_CODE_START_UPDATES);
+        }
     }
 }
