@@ -6,11 +6,9 @@ import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -276,8 +274,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void showGeoPermissionDialog() {
         new AlertDialog.Builder(requireContext())
-                .setTitle("Geo Permission Missing")
-                .setMessage("May Devino SDK take care of that now?")
+                .setTitle(getString(R.string.geo_permission_missing))
+                .setMessage(getString(R.string.may_devino_permission))
                 .setPositiveButton(android.R.string.yes, (dialog, which) ->
                         DevinoSdk.getInstance().requestGeoPermission(requireActivity(), REQUEST_CODE_SEND_GEO)
                 )

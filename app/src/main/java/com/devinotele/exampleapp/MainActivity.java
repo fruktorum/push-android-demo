@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
 
         startGeo();
 
-        Log.d("DevinoPush", "intent = " + getIntent());
+        Log.d(getString(R.string.tag), "intent = " + getIntent());
 
     }
 

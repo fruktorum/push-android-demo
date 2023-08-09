@@ -6,7 +6,6 @@ import com.devinotele.devinosdk.sdk.DevinoSdk;
 import com.devinotele.exampleapp.BuildConfig;
 import com.devinotele.exampleapp.R;
 import com.google.firebase.messaging.FirebaseMessaging;
-
 import io.reactivex.plugins.RxJavaPlugins;
 
 public class DevinoExampleApplication extends Application {
@@ -26,7 +25,7 @@ public class DevinoExampleApplication extends Application {
         DevinoSdk.getInstance().setDefaultNotificationIconColor(0x00FF00);
 
         RxJavaPlugins.setErrorHandler(e -> {
-            Log.d("RxJavaPlugins Error: %s", e.getMessage());
+            Log.d(getString(R.string.tag), getString(R.string.error_rxJavaPlugins) + e.getMessage());
         });
     }
 }
