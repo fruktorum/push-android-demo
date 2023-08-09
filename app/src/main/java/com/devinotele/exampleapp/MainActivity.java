@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.nav_host_fragment);
+        navHostFragment =
+                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         assert navHostFragment != null;
         navController = navHostFragment.getNavController();
 
@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
         DevinoSdk.getInstance().appStarted();
 
         startGeo();
+
+        Log.d("DevinoPush", "intent = " + getIntent());
 
     }
 

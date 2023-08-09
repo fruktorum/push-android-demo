@@ -3,6 +3,7 @@ package com.devinotele.exampleapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 public class DeeplinkActivity extends Activity {
@@ -13,6 +14,7 @@ public class DeeplinkActivity extends Activity {
         setContentView(R.layout.activity_first);
         Button back = findViewById(R.id.back_button);
         back.setOnClickListener(v -> onBackPressed());
+        Log.d("DevinoPush", "intent DeeplinkActivity = " + getIntent());
     }
 
     @Override

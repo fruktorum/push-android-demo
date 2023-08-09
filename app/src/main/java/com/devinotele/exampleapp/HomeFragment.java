@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private static final String SAVED_LOGS = "savedLogs";
     private RetrofitHelper retrofitHelper;
     private final int REQUEST_CODE_SEND_GEO = 11;
-    private SwitchCompat switchSound, switchPicture, switchDeeplink;
+    private SwitchCompat switchSound, switchPicture, switchDeeplink, switchAction;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -148,6 +148,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switchSound = requireView().findViewById(R.id.switch_sound);
         switchPicture = requireView().findViewById(R.id.switch_picture);
         switchDeeplink = requireView().findViewById(R.id.switch_deeplink);
+        switchAction = requireView().findViewById(R.id.switch_action);
 
         Button sendGeo = requireView().findViewById(R.id.send_geo);
         Button sendPush = requireView().findViewById(R.id.send_push);
@@ -167,19 +168,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else {
             registration.setVisibility(View.VISIBLE);
         }
-
-        switchSound.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                Uri sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
-                        + "://"
-                        + requireContext().getPackageName()
-                        + "/" + R.raw.push_sound
-                );
-                DevinoSdk.getInstance().setCustomSound(sound);
-            } else {
-                DevinoSdk.getInstance().useDefaultSound();
-            }
-        });
 
         try {
             PackageInfo pInfo = requireContext()
@@ -213,7 +201,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         FirebaseMessaging.getInstance(),
                         switchPicture.isChecked(),
                         switchSound.isChecked(),
-                        switchDeeplink.isChecked()
+                        switchDeeplink.isChecked(),
+                        switchAction.isChecked(),
+                        requireContext()
                 );
             } catch (Exception e) {
                 Log.d(

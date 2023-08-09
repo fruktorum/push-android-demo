@@ -22,7 +22,7 @@ public class DevinoExampleApplication extends Application {
         DevinoSdk.Builder builder = new DevinoSdk.Builder(this, BuildConfig.DEVINO_API_KEY, appId, appVersion, fb);
         builder.build();
 
-        DevinoSdk.getInstance().setDefaultNotificationIcon(R.drawable.ic_notify_black);
+        DevinoSdk.getInstance().setDefaultNotificationIcon(R.drawable.ic_android_black_24dp);
         DevinoSdk.getInstance().setDefaultNotificationIconColor(0x00FF00);
 
         RxJavaPlugins.setErrorHandler(e -> {

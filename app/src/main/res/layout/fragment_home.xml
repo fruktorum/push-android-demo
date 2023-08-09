@@ -80,9 +80,10 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="16dp"
+                                android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:text="@string/picture"
                                 style="@style/TextRegular" />
@@ -95,15 +96,16 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="16dp"
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="16dp"
+                                android:layout_weight="1"
                                 style="@style/TextRegular"
                                 android:gravity="center_vertical"
                                 android:text="@string/sound" />
@@ -130,15 +132,38 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="16dp"
+                                android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:text="@string/deep_link"
                                 style="@style/TextRegular" />
 
                             <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/switch_deeplink"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="16dp"
+                                android:gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:text="@string/action"
+                                style="@style/TextRegular" />
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/switch_action"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent" />
 
