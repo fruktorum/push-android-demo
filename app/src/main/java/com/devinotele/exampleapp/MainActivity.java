@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
 
         DevinoSdk.getInstance().requestLogs(getLogsCallback());
         DevinoSdk.getInstance().appStarted();
+        DevinoSdk.getInstance().activateSubscription(true);
 
         startGeo();
 
