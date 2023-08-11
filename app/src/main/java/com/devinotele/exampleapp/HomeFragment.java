@@ -1,14 +1,17 @@
 package com.devinotele.exampleapp;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.POST_NOTIFICATIONS;
 import static android.content.Context.CLIPBOARD_SERVICE;
 import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
+
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,20 +22,23 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import com.devinotele.devinosdk.sdk.DevinoLogsCallback;
 import com.devinotele.devinosdk.sdk.DevinoSdk;
 import com.devinotele.exampleapp.network.RetrofitHelper;
 import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.util.Objects;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.ReplaySubject;
@@ -49,6 +55,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private static final String SAVED_LOGS = "savedLogs";
     private RetrofitHelper retrofitHelper;
     private final int REQUEST_CODE_SEND_GEO = 11;
+    private final int REQUEST_CODE_NOTIFICATION = 14;
     private SwitchCompat switchSound, switchPicture, switchDeeplink, switchAction;
 
     public HomeFragment() {
@@ -108,16 +115,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onError(Throwable e) {
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        boolean notificationsEnabled =
-                NotificationManagerCompat.from(requireContext()).areNotificationsEnabled();
-        if (!notificationsEnabled) {
-            logsCallback.onMessageLogged(getString(R.string.notifications_disabled));
-        }
     }
 
     @Override
@@ -195,14 +192,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         if (v.getId() == R.id.send_push) {
             try {
-                retrofitHelper.sendPushWithDevino(
-                        FirebaseMessaging.getInstance(),
-                        switchPicture.isChecked(),
-                        switchSound.isChecked(),
-                        switchDeeplink.isChecked(),
-                        switchAction.isChecked(),
-                        requireContext()
-                );
+
+                if (ActivityCompat.checkSelfPermission(requireContext(), POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        DevinoSdk.getInstance().requestNotificationPermission(
+                                requireActivity(),
+                                REQUEST_CODE_NOTIFICATION
+                        );
+                    }
+                } else {
+                    retrofitHelper.sendPushWithDevino(
+                            FirebaseMessaging.getInstance(),
+                            switchPicture.isChecked(),
+                            switchSound.isChecked(),
+                            switchDeeplink.isChecked(),
+                            switchAction.isChecked(),
+                            requireContext()
+                    );
+                }
             } catch (Exception e) {
                 Log.d(
                         getString(R.string.logs_tag),
