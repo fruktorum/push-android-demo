@@ -15,8 +15,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class RetrofitHelper {
 
-    private DevinoPushApi devinoPushApi;
-    private DevinoLogsCallback callback;
+    private final DevinoPushApi devinoPushApi;
+    private final DevinoLogsCallback callback;
 
     public RetrofitHelper(DevinoLogsCallback callback) {
         devinoPushApi = RetrofitClientInstance.getRetrofitInstanceForDevinoPush().create(DevinoPushApi.class);

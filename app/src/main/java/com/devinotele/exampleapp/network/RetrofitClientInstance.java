@@ -15,7 +15,6 @@ class RetrofitClientInstance {
 
     static Retrofit getRetrofitInstanceForDevinoPush() {
         if (retrofitDevino == null) {
-
             httpClient.addInterceptor(chain -> {
                 Request original = chain.request();
                 Request request = original.newBuilder()
@@ -35,5 +34,4 @@ class RetrofitClientInstance {
         }
         return retrofitDevino;
     }
-
 }
