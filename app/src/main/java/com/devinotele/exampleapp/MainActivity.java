@@ -39,8 +39,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
 
         checkPermission();
 
-        Log.d(getString(R.string.tag), "intent = " + getIntent());
-
+        if (savedInstanceState == null) {
+            Log.d(getString(R.string.tag), "intent.data = " + getIntent().getData());
+            if (getIntent().getData() != null) {
+                if (getIntent().getData().toString()
+                        .equals(getString(R.string.devino_default_deeplink))
+                ) {
+                    navController.navigate(R.id.homeFragment);
+                }
+            }
+        }
     }
 
     private void createLogsCallback() {
@@ -82,30 +90,41 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         switch (requestCode) {
-            case REQUEST_CODE_START_UPDATES -> {
+            case REQUEST_CODE_START_UPDATES, REQUEST_CODE_SEND_GEO -> {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     logsCallback.onMessageLogged(getString(R.string.geo_permission_granted));
                     startGeo();
-                } else {
-                    logsCallback.onMessageLogged(getString(R.string.geo_permission_missing));
-                }
-            }
-            case REQUEST_CODE_SEND_GEO -> {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    logsCallback.onMessageLogged(getString(R.string.geo_permission_granted));
                     DevinoSdk.getInstance().sendCurrentGeo();
                 } else {
                     logsCallback.onMessageLogged(getString(R.string.geo_permission_missing));
                 }
             }
             case REQUEST_CODE_NOTIFICATION_AND_GEO -> {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                ) {
                     logsCallback.onMessageLogged(getString(R.string.geo_permission_granted));
                     logsCallback.onMessageLogged(getString(R.string.notification_permission_granted));
                     startGeo();
-                } else {
+                }
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED
+                        && grantResults[1] == PackageManager.PERMISSION_DENIED
+                ) {
                     logsCallback.onMessageLogged(getString(R.string.geo_permission_missing));
                     logsCallback.onMessageLogged(getString(R.string.notification_permission_missing));
+                }
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_DENIED
+                ) {
+                    logsCallback.onMessageLogged(getString(R.string.geo_permission_granted));
+                    startGeo();
+                    logsCallback.onMessageLogged(getString(R.string.notification_permission_missing));
+                }
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    logsCallback.onMessageLogged(getString(R.string.geo_permission_missing));
+                    logsCallback.onMessageLogged(getString(R.string.notification_permission_granted));
                 }
             }
             case REQUEST_CODE_NOTIFICATION -> {
@@ -122,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
     private void startGeo() {
         DevinoSdk.getInstance().subscribeGeo(this, 1);
         logsCallback.onMessageLogged(
-                getString(R.string.subscribed_geo_interval) + 1 + getString(R.string.min)
+                getString(R.string.subscribed_geo_interval, 1, getString(R.string.min))
         );
     }
 
