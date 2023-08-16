@@ -2,6 +2,7 @@
     <string name="app_name">Devino Example</string>
     <string name="version_placeholder">version V1: %s</string>
     <string name="devino_telecom">Devino Telecom</string>
+    <string name="devino_default_deeplink">devino://default-push-action</string>
 
     <string name="device_type">phone</string>
     <string name="api_base_url">https://integrationapi.net/push/sdk/</string>
@@ -19,6 +20,7 @@
 
     <string name="task_tag">DevinoPushLogs</string>
     <string name="logs_tag">DevinoPushLogs</string>
+    <string name="tag">DevinoPush</string>
 
     <string name="logs">Logs</string>
     <string name="clean_logs">Clean logs</string>
@@ -34,20 +36,26 @@
     <string name="notifications_disabled">Notifications are disabled for this application.</string>
     <string name="registration">Registration</string>
 
-    <string name="subscribed_geo_interval">Subscribed geo with interval: </string>
+    <string name="subscribed_geo_interval">Subscribed geo with interval: %d %s</string>
     <string name="min"> min</string>
-    <string name="geo_permission_missing">GEO PERMISSION MISSING!</string>
-    <string name="geo_permission_granted">GEO PERMISSION GRANTED</string>
-    <string name="permission_denied">PERMISSION DENIED</string>
+    <string name="notification_permission_granted">Notification Permission Granted</string>
+    <string name="notification_permission_missing">Notification Permission Missing</string>
+    <string name="geo_permission_granted">Geo Permission Granted</string>
+    <string name="geo_permission_missing">Geo Permission Missing</string>
+    <string name="may_devino_permission">May Devino SDK take care of that now?</string>
     <string name="send_geo">Send Geo</string>
     <string name="send_notification">Send Notification</string>
     <string name="picture">Picture</string>
-    <string name="sound">Sound\u0020</string>
+    <string name="sound">Sound</string>
     <string name="deep_link">Deep Link</string>
+    <string name="action">Action</string>
+    <string name="deeplink_action">Вы перешли по Deeplink</string>
+    <string name="back">Назад</string>
 
     <string name="error_remove_registration">Error during removed registration:</string>
     <string name="error_send_push">Error during send push:</string>
     <string name="error_send_geo">Error during send geo:</string>
     <string name="error_firebase">Firebase Error: </string>
+    <string name="error_rxJavaPlugins">RxJavaPlugins Error: </string>
 
 </resources>

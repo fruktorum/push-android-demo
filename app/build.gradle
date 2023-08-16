@@ -35,14 +35,12 @@ android {
         debug {
             minifyEnabled false
             buildConfigField "String", "DEVINO_API_KEY", "\"68c3ee3f-82c6-45c4-b81c-d04ceee4cb71\""
-            buildConfigField "String", "DEVINO_APP_PUSH_KEY", "\"key\""
             buildConfigField "String", "DEVINO_SEND_API_KEY", "\"Key 68c3ee3f-82c6-45c4-b81c-d04ceee4cb71\""
             buildConfigField "String", "DEVINO_PUSH_SERVICE_URL", "\"https://api.devino.online/\""
             buildConfigField "String", "DEVINO_APP_ID", "\"111\""
         }
         release {
             buildConfigField "String", "DEVINO_API_KEY", "\"68c3ee3f-82c6-45c4-b81c-d04ceee4cb71\""
-            buildConfigField "String", "DEVINO_APP_PUSH_KEY", "\"key\""
             buildConfigField "String", "DEVINO_SEND_API_KEY", "\"Key 68c3ee3f-82c6-45c4-b81c-d04ceee4cb71\""
             buildConfigField "String", "DEVINO_PUSH_SERVICE_URL", "\"https://api.devino.online/\""
             buildConfigField "String", "DEVINO_APP_ID", "\"111\""
@@ -72,7 +70,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation 'com.google.firebase:firebase-core:21.1.1'
-    implementation 'com.google.firebase:firebase-messaging:23.2.0'
+    implementation 'com.google.firebase:firebase-messaging:23.2.1'
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
@@ -82,9 +80,6 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
 
     implementation 'com.github.bumptech.glide:glide:4.13.0'
-    //implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
-    //implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    //implementation 'androidx.fragment:fragment:1.5.5'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
 
     implementation files('libs/push-android-sdk-release-1.1.8.aar')

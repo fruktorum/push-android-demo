@@ -12,142 +12,153 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity">
 
-    <include
-        android:id="@+id/app_header"
-        layout="@layout/app_header"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintVertical_chainStyle="spread_inside"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/layout_registration_form"/>
+        android:layout_height="match_parent">
 
-
-    <LinearLayout
-        android:id="@+id/layout_registration_form"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginStart="38dp"
-        android:layout_marginEnd="38dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/layout_api_url"
-        app:layout_constraintTop_toBottomOf="@+id/app_header"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:id="@+id/text_user_phone_label"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextRegular"
-            android:text="@string/user_phone"
-            android:layout_marginBottom="15dp"
-            android:labelFor="@+id/edt_user_phone" />
+            android:layout_height="match_parent" >
 
-        <EditText
-            android:id="@+id/edt_user_phone"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@drawable/ic_grey_background"
-            android:inputType="phone"
-            android:text="@string/text_79"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:maxLength="12"
-            android:fontFamily="@font/inter_regular"
-            android:autofillHints="@string/user_phone" />
+            <include
+                android:id="@+id/app_header"
+                layout="@layout/app_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/layout_registration_form"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread_inside"/>
 
-        <TextView
-            android:id="@+id/text_user_email_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextRegular"
-            android:text="@string/user_email"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="15dp"
-            android:labelFor="@+id/edt_user_email" />
 
-        <EditText
-            android:id="@+id/edt_user_email"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@drawable/ic_grey_background"
-            android:hint="@string/email_hint"
-            android:inputType="textEmailAddress"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:fontFamily="@font/inter_regular"
-            android:autofillHints="@string/user_email" />
+            <LinearLayout
+                android:id="@+id/layout_registration_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="38dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/layout_api_url"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/app_header">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_registration"
-            android:layout_width="match_parent"
-            android:layout_marginTop="53dp"
-            android:background="@drawable/ic_button_blue"
-            android:text="@string/register"
-            android:textAllCaps="false"
-            android:textColor="@color/md_white_1000"
-            style="@style/ButtonWide" />
+                <TextView
+                    android:id="@+id/text_user_phone_label"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:labelFor="@+id/edt_user_phone"
+                    android:text="@string/user_phone" />
 
-        <TextView
-            android:id="@+id/text_skip_registration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextRegular"
-            android:text="@string/skip_registration"
-            android:layout_marginTop="20dp" />
+                <EditText
+                    android:id="@+id/edt_user_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:autofillHints="@string/user_phone"
+                    android:background="@drawable/ic_grey_background"
+                    android:fontFamily="@font/inter_regular"
+                    android:inputType="phone"
+                    android:maxLength="12"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/text_79" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/text_user_email_label"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="15dp"
+                    android:labelFor="@+id/edt_user_email"
+                    android:text="@string/user_email" />
 
-    <LinearLayout
-        android:id="@+id/layout_api_url"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginStart="38dp"
-        android:layout_marginEnd="38dp"
-        android:layout_marginBottom="30dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/layout_registration_form"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+                <EditText
+                    android:id="@+id/edt_user_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:autofillHints="@string/user_email"
+                    android:background="@drawable/ic_grey_background"
+                    android:fontFamily="@font/inter_regular"
+                    android:hint="@string/email_hint"
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
 
-        <TextView
-            android:id="@+id/text_api_url_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextRegular"
-            android:text="@string/api_url"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="15dp"
-            android:labelFor="@+id/edt_api_url" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_registration"
+                    style="@style/ButtonWide"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="53dp"
+                    android:background="@drawable/ic_button_blue"
+                    android:text="@string/register"
+                    android:textAllCaps="false"
+                    android:textColor="@color/md_white_1000" />
 
-        <EditText
-            android:id="@+id/edt_api_url"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/ic_grey_background"
-            android:hint="@string/api_url_hint"
-            android:inputType="textUri"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:fontFamily="@font/inter_regular" />
+                <TextView
+                    android:id="@+id/text_skip_registration"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/skip_registration" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_confirm_root_url"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@drawable/ic_button_blue"
-            android:text="@string/confirm_root_url"
-            android:textColor="@color/md_white_1000"
-            style="@style/ButtonWide" />
+            </LinearLayout>
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_api_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="38dp"
+                android:layout_marginEnd="38dp"
+                android:layout_marginBottom="30dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_registration_form">
+
+                <TextView
+                    android:id="@+id/text_api_url_label"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="15dp"
+                    android:labelFor="@+id/edt_api_url"
+                    android:text="@string/api_url" />
+
+                <EditText
+                    android:id="@+id/edt_api_url"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/ic_grey_background"
+                    android:fontFamily="@font/inter_regular"
+                    android:hint="@string/api_url_hint"
+                    android:inputType="textUri"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_confirm_root_url"
+                    style="@style/ButtonWide"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/ic_button_blue"
+                    android:text="@string/confirm_root_url"
+                    android:textColor="@color/md_white_1000" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

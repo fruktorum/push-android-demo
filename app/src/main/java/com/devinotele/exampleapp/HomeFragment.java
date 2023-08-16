@@ -1,16 +1,17 @@
 package com.devinotele.exampleapp;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.POST_NOTIFICATIONS;
 import static android.content.Context.CLIPBOARD_SERVICE;
 import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
+
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,20 +22,23 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import com.devinotele.devinosdk.sdk.DevinoLogsCallback;
 import com.devinotele.devinosdk.sdk.DevinoSdk;
 import com.devinotele.exampleapp.network.RetrofitHelper;
 import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.util.Objects;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.ReplaySubject;
@@ -51,7 +55,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private static final String SAVED_LOGS = "savedLogs";
     private RetrofitHelper retrofitHelper;
     private final int REQUEST_CODE_SEND_GEO = 11;
-    private SwitchCompat switchSound, switchPicture, switchDeeplink;
+    private final int REQUEST_CODE_NOTIFICATION = 14;
+    private SwitchCompat switchSound, switchPicture, switchDeeplink, switchAction;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -113,16 +118,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        boolean notificationsEnabled =
-                NotificationManagerCompat.from(requireContext()).areNotificationsEnabled();
-        if (!notificationsEnabled) {
-            logsCallback.onMessageLogged(getString(R.string.notifications_disabled));
-        }
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(SAVED_LOGS, logsLocal);
         super.onSaveInstanceState(outState);
@@ -148,6 +143,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switchSound = requireView().findViewById(R.id.switch_sound);
         switchPicture = requireView().findViewById(R.id.switch_picture);
         switchDeeplink = requireView().findViewById(R.id.switch_deeplink);
+        switchAction = requireView().findViewById(R.id.switch_action);
 
         Button sendGeo = requireView().findViewById(R.id.send_geo);
         Button sendPush = requireView().findViewById(R.id.send_push);
@@ -167,19 +163,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else {
             registration.setVisibility(View.VISIBLE);
         }
-
-        switchSound.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                Uri sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
-                        + "://"
-                        + requireContext().getPackageName()
-                        + "/" + R.raw.push_sound
-                );
-                DevinoSdk.getInstance().setCustomSound(sound);
-            } else {
-                DevinoSdk.getInstance().useDefaultSound();
-            }
-        });
 
         try {
             PackageInfo pInfo = requireContext()
@@ -209,12 +192,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         if (v.getId() == R.id.send_push) {
             try {
-                retrofitHelper.sendPushWithDevino(
-                        FirebaseMessaging.getInstance(),
-                        switchPicture.isChecked(),
-                        switchSound.isChecked(),
-                        switchDeeplink.isChecked()
-                );
+
+                if (ActivityCompat.checkSelfPermission(requireContext(), POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        DevinoSdk.getInstance().requestNotificationPermission(
+                                requireActivity(),
+                                REQUEST_CODE_NOTIFICATION
+                        );
+                    }
+                } else {
+                    retrofitHelper.sendPushWithDevino(
+                            FirebaseMessaging.getInstance(),
+                            switchPicture.isChecked(),
+                            switchSound.isChecked(),
+                            switchDeeplink.isChecked(),
+                            switchAction.isChecked(),
+                            requireContext()
+                    );
+                }
             } catch (Exception e) {
                 Log.d(
                         getString(R.string.logs_tag),
@@ -286,8 +282,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void showGeoPermissionDialog() {
         new AlertDialog.Builder(requireContext())
-                .setTitle("Geo Permission Missing")
-                .setMessage("May Devino SDK take care of that now?")
+                .setTitle(getString(R.string.geo_permission_missing))
+                .setMessage(getString(R.string.may_devino_permission))
                 .setPositiveButton(android.R.string.yes, (dialog, which) ->
                         DevinoSdk.getInstance().requestGeoPermission(requireActivity(), REQUEST_CODE_SEND_GEO)
                 )
