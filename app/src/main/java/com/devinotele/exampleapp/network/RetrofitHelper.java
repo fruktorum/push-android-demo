@@ -3,6 +3,7 @@ package com.devinotele.exampleapp.network;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import com.devinotele.devinosdk.sdk.DevinoLogsCallback;
 import com.devinotele.devinosdk.sdk.DevinoSdk;
@@ -19,7 +20,9 @@ public class RetrofitHelper {
     private final DevinoLogsCallback callback;
 
     public RetrofitHelper(DevinoLogsCallback callback) {
-        devinoPushApi = RetrofitClientInstance.getRetrofitInstanceForDevinoPush().create(DevinoPushApi.class);
+        devinoPushApi = RetrofitClientInstance
+                .getRetrofitInstanceForDevinoPush()
+                .create(DevinoPushApi.class);
         this.callback = callback;
     }
 
@@ -58,7 +61,7 @@ public class RetrofitHelper {
                     HashMap<String, Object> android = new HashMap<>();
 
                     if (isAction) {
-                        android.put("action", "devino://first");
+                        android.put("action", "devino://first/promo");
                     }
 
                     android.put("androidChannelId", "androidChannelId");
@@ -77,7 +80,10 @@ public class RetrofitHelper {
 
                     if (isPicture) {
                         message += " & Picture";
-                        android.put("image", "https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_instagram-128.png");
+                        android.put(
+                                "image",
+                                "https://cdn-icons-png.flaticon.com/512/226/226770.png"
+                        );
                     }
 
                     if (isSound) {
@@ -88,7 +94,7 @@ public class RetrofitHelper {
                         Log.d("DevinoPush", "sound = " + sound);
                         android.put("sound", sound);
                         // or use method setCustomSound(sound):
-                        // DevinoSdk.getInstance().setCustomSound(Uri.parse(sound));
+                        DevinoSdk.getInstance().setCustomSound(Uri.parse(sound));
                     } else {
                         DevinoSdk.getInstance().useDefaultSound();
                     }

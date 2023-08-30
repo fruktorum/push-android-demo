@@ -21,6 +21,13 @@ android {
 
     signingConfigs {
 
+        debug {
+            storeFile file("mock_key.jks")
+            storePassword "Mock1234"
+            keyAlias "key0"
+            keyPassword "Mock1234"
+        }
+
         release {
             storeFile file("mock_key.jks")
             storePassword "Mock1234"

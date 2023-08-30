@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -57,6 +58,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private final int REQUEST_CODE_SEND_GEO = 11;
     private final int REQUEST_CODE_NOTIFICATION = 14;
     private SwitchCompat switchSound, switchPicture, switchDeeplink, switchAction;
+    private Button sendPush, sendGeo;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -105,6 +107,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 logsView.setText(logs);
                 logToCopy = logs;
                 scrollDown(logsScrollView);
+                setButtonEnable(sendPush);
             }
 
             @Override
@@ -134,6 +137,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         super.onDestroy();
     }
 
+    private void setButtonEnable(Button button) {
+        button.setEnabled(true);
+        button.setBackground(
+                ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_button_blue
+                )
+        );
+    }
+
+    private void setButtonDisable(Button button) {
+        button.setEnabled(false);
+        button.setBackground(
+                ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_grey_background
+                )
+        );
+    }
+
     private void setUpViews() {
         logsView = requireView().findViewById(R.id.logs_view);
         logsScrollView = requireView().findViewById(R.id.logs_scroll_view);
@@ -145,8 +168,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switchDeeplink = requireView().findViewById(R.id.switch_deeplink);
         switchAction = requireView().findViewById(R.id.switch_action);
 
-        Button sendGeo = requireView().findViewById(R.id.send_geo);
-        Button sendPush = requireView().findViewById(R.id.send_push);
+        sendGeo = requireView().findViewById(R.id.send_geo);
+        sendPush = requireView().findViewById(R.id.send_push);
         Button registration = requireView().findViewById(R.id.btn_registration);
         Button copyToken = requireView().findViewById(R.id.copy_token);
         Button copyLog = requireView().findViewById(R.id.copy_log);
@@ -191,6 +214,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
 
         if (v.getId() == R.id.send_push) {
+            setButtonDisable(sendPush);
             try {
 
                 if (ActivityCompat.checkSelfPermission(requireContext(), POST_NOTIFICATIONS)

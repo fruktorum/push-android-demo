@@ -14,7 +14,16 @@ public class DeeplinkActivity extends Activity {
         setContentView(R.layout.activity_first);
         Button back = findViewById(R.id.back_button);
         back.setOnClickListener(v -> onBackPressed());
-        Log.d("DevinoPush", "intent DeeplinkActivity = " + getIntent());
+
+        if (savedInstanceState == null) {
+            if (getIntent().getData() != null) {
+                Log.d(getString(R.string.tag), "Deeplink = " + getIntent().getData().toString());
+                if (getIntent().getData().toString().equals("devino://first/promo")) {
+                    Log.d(getString(R.string.tag), "Deeplink captured ");
+                    //TODO Make navigation to the desired screen if need
+                }
+            }
+        }
     }
 
     @Override
