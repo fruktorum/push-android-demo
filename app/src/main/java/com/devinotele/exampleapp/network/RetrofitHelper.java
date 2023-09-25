@@ -5,12 +5,17 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+
+import androidx.core.content.res.ResourcesCompat;
+
 import com.devinotele.devinosdk.sdk.DevinoLogsCallback;
 import com.devinotele.devinosdk.sdk.DevinoSdk;
 import com.devinotele.exampleapp.BuildConfig;
 import com.devinotele.exampleapp.R;
 import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.util.HashMap;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -18,12 +23,14 @@ public class RetrofitHelper {
 
     private final DevinoPushApi devinoPushApi;
     private final DevinoLogsCallback callback;
+    private final RetrofitClientInstance retrofitClientInstance;
 
     public RetrofitHelper(DevinoLogsCallback callback) {
         devinoPushApi = RetrofitClientInstance
                 .getRetrofitInstanceForDevinoPush()
                 .create(DevinoPushApi.class);
         this.callback = callback;
+        retrofitClientInstance = new RetrofitClientInstance();
     }
 
     @SuppressLint("CheckResult")
@@ -35,24 +42,23 @@ public class RetrofitHelper {
             Boolean isAction,
             Context context
     ) {
-        firebaseInstanceId.getToken()
-                .addOnCompleteListener(task -> {
-                    Log.d("Firebase", " " + task.isSuccessful());
-                    if (!task.isSuccessful()) {
-                        return;
-                    }
-                    String token = task.getResult();
-                    String message = "Simple push";
+        firebaseInstanceId.getToken().addOnCompleteListener(task -> {
+            Log.d("Firebase", " " + task.isSuccessful());
+            if (!task.isSuccessful()) {
+                return;
+            }
+            String token = task.getResult();
+            String message = "Simple push";
 
-                    HashMap<String, Object> body = new HashMap<>();
+            HashMap<String, Object> body = new HashMap<>();
 
-                    body.put("from", BuildConfig.DEVINO_APP_ID);
-                    body.put("validity", 3600);
-                    body.put("to", token);
-                    body.put("title", "Devino Demo");
-                    body.put("badge", 0);
-                    body.put("priority", "HIGH");
-                    body.put("silentPush", false);
+            body.put("from", BuildConfig.DEVINO_APP_ID);
+            body.put("validity", 3600);
+            body.put("to", token);
+            body.put("title", "Devino Demo");
+            body.put("badge", 0);
+            body.put("priority", "HIGH");
+            body.put("silentPush", false);
 
                     HashMap<String, Object> customData = new HashMap<>();
                     customData.put("login", "loginValue");
@@ -91,7 +97,7 @@ public class RetrofitHelper {
                                 + "://"
                                 + context.getPackageName()
                                 + "/" + R.raw.push_sound;
-                        Log.d("DevinoPush", "sound = " + sound);
+                        Log.d(context.getString(R.string.logs_tag), "sound = " + sound);
                         android.put("sound", sound);
                         // or use method setCustomSound(sound):
                         DevinoSdk.getInstance().setCustomSound(Uri.parse(sound));
@@ -108,12 +114,37 @@ public class RetrofitHelper {
                             .subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
-                                    object -> {
-                                        callback.onMessageLogged(object.toString());
-                                        System.out.println(object);
+                                    json -> {
+                                        callback.onMessageLogged(
+                                                context.getString(R.string.push_send)
+                                                        + " "
+                                                        + retrofitClientInstance.getCurrentRequestUrl()
+                                                        + " -> "
+                                                        + json.toString()
+                                        );
+                                        Log.d(context.getString(R.string.logs_tag), json.toString());
                                     },
-                                    Throwable::printStackTrace
+                                    throwable -> {
+                                        callback.onMessageLogged(
+                                                context.getString(R.string.push_not_send)
+                                                        + " "
+                                                        + retrofitClientInstance.getCurrentRequestUrl()
+                                                        + " -> "
+                                                        + throwable.getLocalizedMessage()
+                                        );
+                                        Log.d(
+                                                context.getString(R.string.logs_tag),
+                                                throwable.getLocalizedMessage()
+                                        );
+                                    }
                             );
                 });
+        firebaseInstanceId.getToken().addOnFailureListener(error -> {
+            callback.onMessageLogged(
+                    context.getString(R.string.push_not_send_token_not_got)
+                            + " "
+                            + error.getLocalizedMessage()
+            );
+        });
     }
 }

@@ -25,7 +25,11 @@ public class DevinoExampleApplication extends Application {
         DevinoSdk.getInstance().setDefaultNotificationIconColor(0x00FF00);
 
         RxJavaPlugins.setErrorHandler(e -> {
-            Log.d(getString(R.string.tag), getString(R.string.error_rxJavaPlugins) + e.getMessage());
+            Log.d(
+                    getString(R.string.tag),
+                    getString(R.string.error_rxJavaPlugins)
+                            + " "
+                            + e.getMessage());
         });
     }
 }

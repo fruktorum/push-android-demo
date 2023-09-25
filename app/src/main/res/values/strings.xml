@@ -23,7 +23,11 @@
     <string name="clean_logs">Clean logs</string>
     <string name="copy_log">Copy Log</string>
     <string name="copy_token">Copy Token</string>
+    <string name="push_send">Push was send:</string>
+    <string name="push_not_send">Push was not send:</string>
+    <string name="push_not_send_token_not_got">Push was not send because token is not got (Firebase Error):</string>
     <string name="token_copied">The token has been copied.</string>
+    <string name="token_not_copied">The token not copied.</string>
     <string name="log_copied">The log has been copied.</string>
 
     <string name="class_cast_exception">Activity must implement fragment`s MainActivityCallback.</string>
@@ -52,7 +56,7 @@
     <string name="error_remove_registration">Error during removed registration:</string>
     <string name="error_send_push">Error during send push:</string>
     <string name="error_send_geo">Error during send geo:</string>
-    <string name="error_firebase">Firebase Error: </string>
-    <string name="error_rxJavaPlugins">RxJavaPlugins Error: </string>
+    <string name="error_firebase">Firebase Error:</string>
+    <string name="error_rxJavaPlugins">RxJavaPlugins Error:</string>
 
 </resources>

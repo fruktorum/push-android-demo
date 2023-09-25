@@ -242,7 +242,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 if (!task.isSuccessful()) {
                     try {
                         logsCallback.onMessageLogged(
-                                getString(R.string.error_firebase)
+                                getString(R.string.token_not_copied)
+                                        + " "
+                                        + getString(R.string.error_firebase)
+                                        + " "
                                         + Objects.requireNonNull(task.getException()).getMessage()
                         );
                     } catch (Throwable error) {
