@@ -5,8 +5,6 @@
     <string name="devino_default_deeplink">devino://default-push-action</string>
 
     <string name="device_type">phone</string>
-    <string name="api_base_url">https://integrationapi.net/push/sdk/</string>
-
     <string name="user_email">User Email</string>
     <string name="email_hint">email</string>
     <string name="text_79">+79</string>
@@ -18,7 +16,6 @@
     <string name="confirm_root_url">Confirm Root Url</string>
     <string name="register">Register</string>
 
-    <string name="task_tag">DevinoPushLogs</string>
     <string name="logs_tag">DevinoPushLogs</string>
     <string name="tag">DevinoPush</string>
 
@@ -37,7 +34,7 @@
     <string name="registration">Registration</string>
 
     <string name="subscribed_geo_interval">Subscribed geo with interval: %d %s</string>
-    <string name="min"> min</string>
+    <string name="min">min</string>
     <string name="notification_permission_granted">Notification Permission Granted</string>
     <string name="notification_permission_missing">Notification Permission Missing</string>
     <string name="geo_permission_granted">Geo Permission Granted</string>

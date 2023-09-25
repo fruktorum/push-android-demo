@@ -91,7 +91,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             }
         });
 
-        apiBaseUrl.setText(getString(R.string.api_base_url));
+        apiBaseUrl.setText(BuildConfig.DEVINO_SDK_BASE_URL);
 
         if (savedInstanceState != null) {
             phone = savedInstanceState.getString(SAVED_PHONE);

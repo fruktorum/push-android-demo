@@ -45,12 +45,24 @@ android {
             buildConfigField "String", "DEVINO_SEND_API_KEY", "\"Key 68c3ee3f-82c6-45c4-b81c-d04ceee4cb71\""
             buildConfigField "String", "DEVINO_PUSH_SERVICE_URL", "\"https://api.devino.online/\""
             buildConfigField "String", "DEVINO_APP_ID", "\"111\""
+            buildConfigField "String", "DEVINO_SDK_BASE_URL", "\"https://integrationapi.net/push/sdk/\""
+            /*buildConfigField "String", "DEVINO_API_KEY", "\"$System.env.DEVINO_API_KEY\""
+            buildConfigField "String", "DEVINO_SEND_API_KEY", "\"$System.env.DEVINO_SEND_API_KEY\""
+            buildConfigField "String", "DEVINO_PUSH_SERVICE_URL", "\"$System.env.DEVINO_PUSH_SERVICE_URL\""
+            buildConfigField "String", "DEVINO_APP_ID", "\"$System.env.DEVINO_APP_ID\""
+            buildConfigField "String", "DEVINO_SDK_BASE_URL", "\"$System.env.DEVINO_SDK_BASE_URL\""*/
         }
         release {
             buildConfigField "String", "DEVINO_API_KEY", "\"68c3ee3f-82c6-45c4-b81c-d04ceee4cb71\""
             buildConfigField "String", "DEVINO_SEND_API_KEY", "\"Key 68c3ee3f-82c6-45c4-b81c-d04ceee4cb71\""
             buildConfigField "String", "DEVINO_PUSH_SERVICE_URL", "\"https://api.devino.online/\""
             buildConfigField "String", "DEVINO_APP_ID", "\"111\""
+            buildConfigField "String", "DEVINO_SDK_BASE_URL", "\"https://integrationapi.net/push/sdk/\""
+            /*buildConfigField "String", "DEVINO_API_KEY", "\"$System.env.DEVINO_API_KEY\""
+            buildConfigField "String", "DEVINO_SEND_API_KEY", "\"$System.env.DEVINO_SEND_API_KEY\""
+            buildConfigField "String", "DEVINO_PUSH_SERVICE_URL", "\"$System.env.DEVINO_PUSH_SERVICE_URL\""
+            buildConfigField "String", "DEVINO_APP_ID", "\"$System.env.DEVINO_APP_ID\""
+            buildConfigField "String", "DEVINO_SDK_BASE_URL", "\"$System.env.DEVINO_SDK_BASE_URL\""*/
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
