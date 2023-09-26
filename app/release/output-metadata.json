@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.devinotele.exampleapp",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 5,
+      "versionName": "3.0.0",
+      "outputFile": "com.devinotele.exampleapp.demo-v5(3.0.0)-26-09-2023T09-08-release.apk"
+    }
+  ],
+  "elementType": "File"
+}
