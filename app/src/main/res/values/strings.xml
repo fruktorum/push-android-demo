@@ -7,7 +7,7 @@
     <string name="device_type">phone</string>
     <string name="user_email">User Email</string>
     <string name="email_hint">email</string>
-    <string name="text_79">+79</string>
+    <string name="symbol_plus">+</string>
     <string name="invalid_phone_or_email">Invalid phone or email</string>
     <string name="user_phone">User Phone</string>
     <string name="skip_registration">Skip registration</string>

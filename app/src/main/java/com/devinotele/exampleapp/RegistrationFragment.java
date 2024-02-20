@@ -77,12 +77,12 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         userPhone.addTextChangedListener(new BriefTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() < 3) {
-                    userPhone.setText(getString(R.string.text_79));
+                if (s.length() < 1) {
+                    userPhone.setText(getString(R.string.symbol_plus));
                 }
-                else if (!s.subSequence(0, 3).toString().equals(getString(R.string.text_79))) {
-                    String prefix = s.subSequence(0, 3).toString();
-                    String newValue = s.toString().replace(prefix, getString(R.string.text_79));
+                else if (!s.subSequence(0, 1).toString().equals(getString(R.string.symbol_plus))) {
+                    String prefix = s.subSequence(0, 1).toString();
+                    String newValue = s.toString().replace(prefix, getString(R.string.symbol_plus));
                     userPhone.setText(newValue);
                 }
                 if (s.length() > 12) {
