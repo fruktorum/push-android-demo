@@ -4,12 +4,15 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+
 import com.devinotele.devinosdk.sdk.DevinoLogsCallback;
 import com.devinotele.devinosdk.sdk.DevinoSdk;
+
 import io.reactivex.subjects.ReplaySubject;
 
 public class MainActivity extends AppCompatActivity implements MainActivityCallback {
@@ -100,32 +103,42 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
                 }
             }
             case REQUEST_CODE_NOTIFICATION_AND_GEO -> {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                ) {
-                    logsCallback.onMessageLogged(getString(R.string.geo_permission_granted));
+
+                // position 0 ACCESS_FINE_LOCATION
+                // position 1 POST_NOTIFICATIONS
+                // position 2 ACCESS_COARSE_LOCATION
+
+                // check notification result
+                if (grantResults.length > 1 && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     logsCallback.onMessageLogged(getString(R.string.notification_permission_granted));
-                    startGeo();
-                }
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED
-                        && grantResults[1] == PackageManager.PERMISSION_DENIED
-                ) {
-                    logsCallback.onMessageLogged(getString(R.string.geo_permission_missing));
+                } else if (grantResults.length > 1 && grantResults[1] == PackageManager.PERMISSION_DENIED) {
                     logsCallback.onMessageLogged(getString(R.string.notification_permission_missing));
                 }
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[1] == PackageManager.PERMISSION_DENIED
+
+                // check geo result
+                if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                        grantResults[2] == PackageManager.PERMISSION_GRANTED
                 ) {
+
                     logsCallback.onMessageLogged(getString(R.string.geo_permission_granted));
                     startGeo();
-                    logsCallback.onMessageLogged(getString(R.string.notification_permission_missing));
-                }
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED
-                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                ) {
+
+                } else if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_DENIED &&
+                        grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+
+                    logsCallback.onMessageLogged(getString(R.string.geo_coarse_permission_granted));
+                    startGeo();
+
+                } else if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                        grantResults[2] == PackageManager.PERMISSION_DENIED) {
+
+                    logsCallback.onMessageLogged(getString(R.string.geo_fine_permission_granted));
+                    startGeo();
+
+                } else {
                     logsCallback.onMessageLogged(getString(R.string.geo_permission_missing));
-                    logsCallback.onMessageLogged(getString(R.string.notification_permission_granted));
                 }
+
             }
             case REQUEST_CODE_NOTIFICATION -> {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -134,15 +147,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
                     logsCallback.onMessageLogged(getString(R.string.notification_permission_missing));
                 }
             }
-
         }
     }
 
     private void startGeo() {
         DevinoSdk.getInstance().subscribeGeo(this, 1);
-        logsCallback.onMessageLogged(
-                getString(R.string.subscribed_geo_interval, 1, getString(R.string.min))
-        );
     }
 
     private void checkPermission() {

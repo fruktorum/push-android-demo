@@ -2,16 +2,17 @@
 
 buildscript {
 
+
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io'}
+        maven  { url 'https://jitpack.io'}
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
-        classpath 'com.google.gms:google-services:4.3.15'
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.0")
+        classpath 'com.android.tools.build:gradle:8.1.4'
+        classpath 'com.google.gms:google-services:4.4.1'
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
         classpath 'org.mockito:mockito-core:3.3.3'
     }
 }
@@ -26,6 +27,6 @@ allprojects {
 
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
 }

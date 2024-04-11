@@ -42,6 +42,8 @@
     <string name="notification_permission_granted">Notification Permission Granted</string>
     <string name="notification_permission_missing">Notification Permission Missing</string>
     <string name="geo_permission_granted">Geo Permission Granted</string>
+    <string name="geo_fine_permission_granted">Geo Fine Permission Granted</string>
+    <string name="geo_coarse_permission_granted">Geo Coarse Permission Granted</string>
     <string name="geo_permission_missing">Geo Permission Missing</string>
     <string name="may_devino_permission">May Devino SDK take care of that now?</string>
     <string name="send_geo">Send Geo</string>
